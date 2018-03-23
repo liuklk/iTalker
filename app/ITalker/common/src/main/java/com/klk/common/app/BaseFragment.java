@@ -33,7 +33,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(mRootView==null){
             int layoutId = getLayoutId();
-            View root = inflater.inflate(layoutId, container);
+            View root = inflater.inflate(layoutId, container,false);
             initWidget(root);
             mRootView = root;
         }else {
@@ -44,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
         }
 
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return mRootView;
     }
 
     @Override

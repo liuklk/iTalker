@@ -23,7 +23,7 @@ import butterknife.Unbinder;
 
 public abstract class BaseRecyclerAdapter<Data>
         extends RecyclerView.Adapter<BaseRecyclerAdapter.BaseRecyclerViewHolder>
-        implements View.OnClickListener,View.OnLongClickListener ,RecyclerCallback{
+        implements View.OnClickListener,View.OnLongClickListener ,RecyclerCallback<Data>{
 
     private  List<Data> dataList = new ArrayList<>();
     private AdapterListener mListener;
@@ -68,6 +68,7 @@ public abstract class BaseRecyclerAdapter<Data>
         viewHolder.mCallback = this ;
         return viewHolder;
     }
+
 
     /**
      * 创建viewHolder
@@ -168,6 +169,22 @@ public abstract class BaseRecyclerAdapter<Data>
     }
 
     /**
+     * 进行数据的更新
+     * @param data
+     * @param recyclerViewHolder
+     */
+    @Override
+    public void update(Data data, BaseRecyclerViewHolder recyclerViewHolder) {
+        //得到当前的坐标
+        int position = recyclerViewHolder.getAdapterPosition();
+        if(position>=0){
+            dataList.remove(position);
+            dataList.add(position,data);
+            notifyItemChanged(position);
+        }
+
+    }
+    /**
      * 当点击item
      * @param view
      */
@@ -197,10 +214,32 @@ public abstract class BaseRecyclerAdapter<Data>
         return false;
     }
 
-
-    protected interface AdapterListener<Data>{
+    /**
+     * 设置监听器
+     * @param listener
+     */
+    public void setListener(AdapterListener listener){
+        this.mListener = listener;
+    }
+    public interface AdapterListener<Data>{
         void onItemClick(BaseRecyclerViewHolder recyclerViewHolder , Data data);
         void onItemLongClick(BaseRecyclerViewHolder recyclerViewHolder , Data data);
+    }
+
+    /**
+     * 监听器的实现类
+     */
+    public static abstract class AdapterListenerImpl<Data> implements AdapterListener<Data>{
+
+        @Override
+        public void onItemClick(BaseRecyclerViewHolder recyclerViewHolder, Data data) {
+
+        }
+
+        @Override
+        public void onItemLongClick(BaseRecyclerViewHolder recyclerViewHolder, Data data) {
+
+        }
     }
 
     /**
