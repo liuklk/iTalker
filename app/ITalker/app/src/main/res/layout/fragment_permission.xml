@@ -2,13 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.klk.italker.fragment.main.HomeFragment">
+    tools:context="com.klk.italker.fragment.utils.PermissionFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.klk.common.widget.view.GalleryView
-        android:id="@+id/gv_home"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"/>
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

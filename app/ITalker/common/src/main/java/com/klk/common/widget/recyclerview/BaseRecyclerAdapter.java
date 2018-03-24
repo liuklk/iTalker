@@ -2,6 +2,7 @@ package com.klk.common.widget.recyclerview;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,12 @@ import butterknife.Unbinder;
  * @Auther Administrator
  * @date 2018/3/21  16:55
  */
-
+@SuppressWarnings({"unchecked", "unused"})
 public abstract class BaseRecyclerAdapter<Data>
         extends RecyclerView.Adapter<BaseRecyclerAdapter.BaseRecyclerViewHolder>
         implements View.OnClickListener,View.OnLongClickListener ,RecyclerCallback<Data>{
 
-    private  List<Data> dataList = new ArrayList<>();
+    private final List<Data> mDataList ;
     private AdapterListener mListener;
 
     /**
@@ -40,7 +41,7 @@ public abstract class BaseRecyclerAdapter<Data>
     }
 
     public BaseRecyclerAdapter(List<Data> dataList, AdapterListener mListener) {
-        this.dataList = dataList;
+        this.mDataList = dataList;
         this.mListener = mListener;
     }
 
@@ -85,7 +86,7 @@ public abstract class BaseRecyclerAdapter<Data>
      */
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        return getItemViewType(mDataList.get(position),position);
     }
 
     /**
@@ -105,7 +106,7 @@ public abstract class BaseRecyclerAdapter<Data>
     @Override
     public void onBindViewHolder(BaseRecyclerViewHolder holder, int position) {
         //获取数据
-        Data data = dataList.get(position);
+        Data data = mDataList.get(position);
         //触发绑定
         holder.bind(data);
     }
@@ -114,9 +115,11 @@ public abstract class BaseRecyclerAdapter<Data>
      * 获取数据的数量
      * @return  数量
      */
+    private static final String TAG = "klk";
     @Override
     public int getItemCount() {
-        return dataList.size();
+        Log.e(TAG, "mDataList: "+mDataList);
+        return mDataList.size();
     }
 
     /**
@@ -124,8 +127,8 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param data
      */
     public void add(Data data){
-        dataList.add(dataList.size()-1,data);
-        notifyItemInserted(dataList.size()-1);
+        mDataList.add(mDataList.size()-1,data);
+        notifyItemInserted(mDataList.size()-1);
     }
 
     /**
@@ -133,8 +136,8 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param datas
      */
     public void  add(Data...datas){
-        int startPos = dataList.size() - 1;
-        Collections.addAll(dataList,datas);
+        int startPos = mDataList.size() - 1;
+        Collections.addAll(mDataList,datas);
         notifyItemRangeInserted(startPos,datas.length);
     }
     /**
@@ -142,8 +145,8 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param datas
      */
     public void add(ArrayList<Data> datas){
-        int startPos = dataList.size()-1;
-        dataList.addAll(dataList.size()-1,datas);
+        int startPos = mDataList.size()-1;
+        mDataList.addAll(mDataList.size()-1,datas);
         notifyItemRangeInserted(startPos,datas.size());
     }
 
@@ -151,7 +154,7 @@ public abstract class BaseRecyclerAdapter<Data>
      * 清除所有数据
      */
     public void clear(){
-        dataList.clear();
+        mDataList.clear();
         notifyDataSetChanged();
     }
 
@@ -160,11 +163,11 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param datas
      */
     public void replace(ArrayList<Data> datas){
-        dataList.clear();
+        mDataList.clear();
         if(datas==null&&datas.size()==0){
             return;
         }
-        dataList.addAll(datas);
+        mDataList.addAll(datas);
         notifyDataSetChanged();
     }
 
@@ -178,8 +181,8 @@ public abstract class BaseRecyclerAdapter<Data>
         //得到当前的坐标
         int position = recyclerViewHolder.getAdapterPosition();
         if(position>=0){
-            dataList.remove(position);
-            dataList.add(position,data);
+            mDataList.remove(position);
+            mDataList.add(position,data);
             notifyItemChanged(position);
         }
 
@@ -193,7 +196,7 @@ public abstract class BaseRecyclerAdapter<Data>
         BaseRecyclerViewHolder holder = (BaseRecyclerViewHolder) view.getTag(R.id.tag_recycler_holder);
         int pos = holder.getAdapterPosition() ;
         if(mListener!=null){
-            mListener.onItemClick(holder,dataList.get(pos));
+            mListener.onItemClick(holder,mDataList.get(pos));
         }
 
     }
@@ -208,7 +211,7 @@ public abstract class BaseRecyclerAdapter<Data>
         BaseRecyclerViewHolder holder = (BaseRecyclerViewHolder) view.getTag(R.id.tag_recycler_holder);
         int pos = holder.getAdapterPosition() ;
         if(mListener!=null){
-            mListener.onItemLongClick(holder,dataList.get(pos));
+            mListener.onItemLongClick(holder,mDataList.get(pos));
             return true ;
         }
         return false;
