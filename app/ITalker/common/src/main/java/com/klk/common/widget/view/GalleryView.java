@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.klk.common.R;
 import com.klk.common.widget.recyclerview.BaseRecyclerAdapter;
 import com.klk.common.widget.recyclerview.BaseRecyclerAdapter.BaseRecyclerViewHolder;
@@ -39,7 +40,7 @@ public class GalleryView extends RecyclerView {
     private MyLoaderCallback loaderCallback = new MyLoaderCallback();
     //所有选中的图片
     private List<Image> mSelectedImage = new LinkedList<>();
-    private GalleryAdapter mAdapter = new GalleryAdapter(mSelectedImage);
+    private GalleryAdapter mAdapter = new GalleryAdapter();
 
     public GalleryView(Context context) {
         super(context);
@@ -64,7 +65,7 @@ public class GalleryView extends RecyclerView {
             @Override
             public void onItemClick(BaseRecyclerViewHolder recyclerViewHolder, Image image) {
                 if (onItemSelectedClick(image)) {
-                    recyclerViewHolder.update(image);
+                    recyclerViewHolder.updateData(image);
                 }
 
             }
@@ -156,6 +157,7 @@ public class GalleryView extends RecyclerView {
      * @param images
      */
     private void updateSource(ArrayList<Image> images) {
+        //Log.e(TAG, "11111111updateSource: images.size"+ images.size());
         mAdapter.replace(images);
     }
 
@@ -222,26 +224,31 @@ public class GalleryView extends RecyclerView {
             Log.e(TAG, "onCreateLoader: "+"22222222222222222222" );
             ArrayList<Image> images = new ArrayList<>();
             //当数据load完成
-            if (data != null && data.getCount() > 0) {
-                data.moveToFirst();//将游标移到首位
-                do {
-                    int id = data.getInt(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
-                    String path = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]));
-                    long date = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
+            if (data != null ) {
+                int count = data.getCount();
+                Log.e(TAG, "onLoadFinished: count."+count );
+                if(count>0){
+                    data.moveToFirst();//将游标移到首位
+                    do {
+                        int id = data.getInt(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
+                        String path = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]));
+                        long date = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
 
-                    File file = new File(path);
-                    //如果图片不存在，或者太小，直接跳过
-                    if (!file.exists() || file.length() < IMAGE_SIZE) {
-                        continue;
-                    }
+                        File file = new File(path);
+                        //如果图片不存在，或者太小，直接跳过
+                        if (!file.exists() || file.length() < IMAGE_SIZE) {
+                            continue;
+                        }
 
-                    Image image = new Image();
-                    image.id = id;
-                    image.path = path;
-                    image.date = date;
-                    images.add(image);
-                } while (data.moveToNext());
-            }
+                        Image image = new Image();
+                        image.id = id;
+                        image.path = path;
+                        image.date = date;
+                        images.add(image);
+                    } while (data.moveToNext());
+                }
+                }
+
             Log.e(TAG, "onLoadFinished: images5555555555555555555"+images);
             updateSource(images);
         }
@@ -257,9 +264,6 @@ public class GalleryView extends RecyclerView {
      * 图片选择界面的适配器
      */
     private class GalleryAdapter extends BaseRecyclerAdapter<Image> {
-        public GalleryAdapter(List<Image> imageList) {
-            super(imageList);
-        }
 
         @Override
         protected BaseRecyclerViewHolder onCreateViewHolder(View root, int viewType) {
@@ -285,17 +289,21 @@ public class GalleryView extends RecyclerView {
         ImageView ivImage;
         public ViewHolder(View itemView) {
             super(itemView);
-            viewShadow = findViewById(R.id.view_shadow);
-            cbSelected = findViewById(R.id.cb_selected);
-            ivImage = findViewById(R.id.iv_image);
+            viewShadow = itemView.findViewById(R.id.view_shadow);
+            cbSelected = itemView.findViewById(R.id.cb_selected);
+            ivImage = itemView.findViewById(R.id.iv_image);
         }
 
         @Override
         public void onBind(Image image) {
+            Log.e(TAG, "onBind: ivImage"+ivImage );
+            Log.e(TAG, "onBind: cbSelected"+cbSelected );
+            Log.e(TAG, "onBind: viewShadow"+viewShadow );
+            Log.e(TAG, "onBind: "+ image.path);
             Glide.with(getContext())
                     .load(image.path)
                     .centerCrop()
-                    .diskCacheStrategy(null)//不使用缓存，直接从本地加载
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用缓存，直接从本地加载
                     .placeholder(R.color.grey_200)
                     .into(ivImage);
 

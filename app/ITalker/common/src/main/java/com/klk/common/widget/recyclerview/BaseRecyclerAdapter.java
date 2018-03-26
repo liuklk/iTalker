@@ -21,7 +21,6 @@ import butterknife.Unbinder;
  * @Auther Administrator
  * @date 2018/3/21  16:55
  */
-@SuppressWarnings({"unchecked", "unused"})
 public abstract class BaseRecyclerAdapter<Data>
         extends RecyclerView.Adapter<BaseRecyclerAdapter.BaseRecyclerViewHolder>
         implements View.OnClickListener,View.OnLongClickListener ,RecyclerCallback<Data>{
@@ -36,8 +35,8 @@ public abstract class BaseRecyclerAdapter<Data>
         this(null);
     }
 
-    public BaseRecyclerAdapter(List<Data> dataList) {
-        this(dataList,null);
+    public BaseRecyclerAdapter(AdapterListener mListener) {
+        this(new ArrayList<Data>(),mListener);
     }
 
     public BaseRecyclerAdapter(List<Data> dataList, AdapterListener mListener) {
@@ -118,7 +117,7 @@ public abstract class BaseRecyclerAdapter<Data>
     private static final String TAG = "klk";
     @Override
     public int getItemCount() {
-        Log.e(TAG, "mDataList: "+mDataList);
+        Log.e(TAG, "mDataList: "+mDataList.size());
         return mDataList.size();
     }
 
@@ -127,7 +126,7 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param data
      */
     public void add(Data data){
-        mDataList.add(mDataList.size()-1,data);
+        mDataList.add(data);
         notifyItemInserted(mDataList.size()-1);
     }
 
@@ -136,18 +135,24 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param datas
      */
     public void  add(Data...datas){
-        int startPos = mDataList.size() - 1;
-        Collections.addAll(mDataList,datas);
-        notifyItemRangeInserted(startPos,datas.length);
+        if(mDataList!=null&&mDataList.size()>0){
+            int startPos = mDataList.size();
+            Collections.addAll(mDataList,datas);
+            notifyItemRangeInserted(startPos,datas.length);
+        }
+
     }
     /**
      *插入一个集合数据
      * @param datas
      */
     public void add(ArrayList<Data> datas){
-        int startPos = mDataList.size()-1;
-        mDataList.addAll(mDataList.size()-1,datas);
-        notifyItemRangeInserted(startPos,datas.size());
+        if(mDataList!=null&&mDataList.size()>0){
+            int startPos = mDataList.size();
+            mDataList.addAll(mDataList.size(),datas);
+            notifyItemRangeInserted(startPos,datas.size());
+        }
+
     }
 
     /**
@@ -164,7 +169,7 @@ public abstract class BaseRecyclerAdapter<Data>
      */
     public void replace(ArrayList<Data> datas){
         mDataList.clear();
-        if(datas==null&&datas.size()==0){
+        if(datas==null||datas.size()==0){
             return;
         }
         mDataList.addAll(datas);
@@ -180,6 +185,10 @@ public abstract class BaseRecyclerAdapter<Data>
     public void update(Data data, BaseRecyclerViewHolder recyclerViewHolder) {
         //得到当前的坐标
         int position = recyclerViewHolder.getAdapterPosition();
+        Log.e(TAG, "update: mDataList"+mDataList);
+        Log.e(TAG, "update: mDataList.size"+mDataList.size());
+        Log.e(TAG, "update: position"+position);
+
         if(position>=0){
             mDataList.remove(position);
             mDataList.add(position,data);
@@ -273,9 +282,9 @@ public abstract class BaseRecyclerAdapter<Data>
          */
          public abstract void onBind(Data data);
 
-         public void update(Data data){
+         public void updateData(Data data){
              if(this.mCallback!=null){
-                 mCallback.update(data,this);
+                 this.mCallback.update(data,this);
              }
 
         }

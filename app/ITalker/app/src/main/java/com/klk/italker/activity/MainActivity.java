@@ -126,5 +126,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @OnClick(R.id.btn_action)
     public void onActionClicked() {
+        AccountActivity.show(this);
     }
 }

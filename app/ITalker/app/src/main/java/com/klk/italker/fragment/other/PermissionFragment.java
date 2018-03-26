@@ -1,13 +1,16 @@
-package com.klk.italker.fragment.utils;
+package com.klk.italker.fragment.other;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.klk.common.widget.view.TransStatusBottomSheetDialog;
 import com.klk.italker.R;
 
 import java.util.List;
@@ -17,14 +20,21 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
-public class PermissionFragment extends Fragment implements EasyPermissions.PermissionCallbacks{
+public class PermissionFragment extends BottomSheetDialogFragment implements EasyPermissions.PermissionCallbacks{
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new TransStatusBottomSheetDialog(getContext());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_permission, container, false);
+        View root = inflater.inflate(R.layout.fragment_permission, container, false);
+
+        return root;
     }
+
 
     /**
      *

@@ -37,12 +37,14 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"
     //6.0权限管理
     compile "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
+    //图片剪切库
+    compile "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
+
+    compile project(':factory')
+
+
+
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile project(':common')
-    compile project(':lang')
-
-
-
+    compile 'com.android.support:support-v4:26.+'
     testCompile 'junit:junit:4.12'
-
 }
