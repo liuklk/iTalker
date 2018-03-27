@@ -17,7 +17,7 @@ import java.io.File;
 
 public class MyApplication extends Application {
 
-    public static MyApplication myApplication ;
+    private static MyApplication myApplication ;
 
     @Override
     public void onCreate() {

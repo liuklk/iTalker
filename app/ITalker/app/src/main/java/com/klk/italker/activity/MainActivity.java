@@ -1,13 +1,13 @@
 package com.klk.italker.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,9 +23,9 @@ import com.klk.italker.R;
 import com.klk.italker.fragment.main.ContactFragment;
 import com.klk.italker.fragment.main.GroupFragment;
 import com.klk.italker.fragment.main.HomeFragment;
+import com.klk.italker.fragment.other.PermissionFragment;
 import com.klk.italker.helper.NavHelper;
 
-import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
 
@@ -54,6 +54,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     FloatActionButton btnAction;
     private NavHelper<Integer> mNavHelper;
 
+    public static void show(Context context){
+        context.startActivity(new Intent(context,MainActivity.class));
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -77,6 +80,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
+
+        PermissionFragment.haveAll(this,getSupportFragmentManager());
 
     }
 

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.klk.common.app.BaseFragment;
 import com.klk.common.app.MyApplication;
 import com.klk.common.widget.view.PortraitView;
+import com.klk.factory.Factory;
+import com.klk.factory.net.UpLoadHelper;
 import com.klk.italker.R;
 import com.klk.italker.fragment.media.GalleryFragment;
 import com.yalantis.ucrop.UCrop;
@@ -29,6 +32,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class UpdateFragment extends BaseFragment {
+    private static final String TAG = "UpdateFragment";
 
     @BindView(R.id.pv_account)
     PortraitView pvAccount;
@@ -85,6 +89,15 @@ public class UpdateFragment extends BaseFragment {
                         .centerCrop()
                         .into(pvAccount);
 
+                final String path = resultUri.getPath();
+                Factory.runOnAysnc(new Runnable() {
+                    @Override
+                    public void run() {
+                        String url = UpLoadHelper.upLoadPortrait(path);
+                        Log.e(TAG, "run: path:"+path);
+                        Log.e(TAG, "run: url:"+url);
+                    }
+                });
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
