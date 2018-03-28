@@ -1,6 +1,8 @@
 package net.klk.web.italker.push.service;
 
-import net.klk.web.italker.push.bean.User;
+
+
+import net.klk.web.italker.push.db.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
