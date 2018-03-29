@@ -1,4 +1,4 @@
-package net.klk.web.italker.push.db;
+package net.klk.web.italker.push.bean.db;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
