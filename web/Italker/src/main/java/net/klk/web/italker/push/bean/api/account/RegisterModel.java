@@ -1,5 +1,6 @@
 package net.klk.web.italker.push.bean.api.account;
 
+import com.google.common.base.Strings;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -36,5 +37,12 @@ public class RegisterModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public static boolean chick(RegisterModel model){
+        return model!=null
+                && !Strings.isNullOrEmpty(model.getAccount())
+                && !Strings.isNullOrEmpty(model.getPassword())
+                && !Strings.isNullOrEmpty(model.getName());
     }
 }

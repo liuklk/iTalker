@@ -1,6 +1,5 @@
 package net.klk.web.italker.push;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import net.klk.web.italker.push.provider.GsonProvider;
 import net.klk.web.italker.push.service.AccountService;
 import org.glassfish.jersey.server.ResourceConfig;

@@ -65,74 +65,69 @@ public class Hib {
     }
 
 
-    // 用户的实际的操作的一个接口
-    public interface QueryOnly {
+    public interface QueryOnly{
         void query(Session session);
     }
 
-    // 简化Session事物操的一个工具方法
-    public static void queryOnly(QueryOnly query) {
-        // 重开一个Session
+    /**
+     * 仅仅查询，没有返回
+     * @param query
+     */
+    public static void queryOnly(QueryOnly query){
+
         Session session = sessionFactory.openSession();
-        // 开启事物
-        final Transaction transaction = session.beginTransaction();
+
+        Transaction transaction = session.beginTransaction();
 
         try {
-            // 调用传递进来的接口，
-            // 并调用接口的方法把Session传递进去
+
             query.query(session);
-            // 提交
+
             transaction.commit();
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            // 回滚
             try {
                 transaction.rollback();
-            } catch (RuntimeException e1) {
+            }catch (RuntimeException e1){
                 e1.printStackTrace();
             }
-        } finally {
-            // 无论成功失败，都需要关闭Session
+        }finally {
             session.close();
         }
     }
 
-
-    // 用户的实际的操作的一个接口
-    // 具有返回值T
-    public interface Query<T> {
+    public interface Query<T>{
         T query(Session session);
     }
 
-    // 简化Session操作的工具方法，
-    // 具有一个返回值
-    public static <T> T query(Query<T> query) {
-        // 重开一个Session
-        Session session = sessionFactory.openSession();
-        // 开启事物
-        final Transaction transaction = session.beginTransaction();
+    /**
+     * 查询，有返回 ,简化Session 操作
+     * @param query
+     */
+    public static<T> T query(Query<T> query){
 
+        Session session = sessionFactory.openSession();
+
+        Transaction transaction = session.beginTransaction();
         T t = null;
         try {
-            // 调用传递进来的接口，
-            // 并调用接口的方法把Session传递进去
-            t = query.query(session);
-            // 提交
+
+           t = query.query(session);
+
             transaction.commit();
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            // 回滚
             try {
                 transaction.rollback();
-            } catch (RuntimeException e1) {
+            }catch (RuntimeException e1){
                 e1.printStackTrace();
             }
-        } finally {
-            // 无论成功失败，都需要关闭Session
+
+        }finally {
             session.close();
         }
 
-        return t;
+        return t ;
     }
 
 

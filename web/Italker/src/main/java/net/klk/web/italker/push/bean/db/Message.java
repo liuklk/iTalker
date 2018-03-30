@@ -49,7 +49,7 @@ public class Message {
     private String senderId ;
 
     //消息接收者
-    @JoinColumn(name = "senderId")
+    @JoinColumn(name = "receiverId")
     @ManyToOne(optional = false)
     private User receiver;
 
