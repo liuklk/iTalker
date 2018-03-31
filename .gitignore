@@ -2,5 +2,7 @@
 *.lock
 
 app/ITalker/.idea
-web/.idea
-web/build
+web/Italker/build
+web/Italker/.gradle
+web/Italker/.idea
+
