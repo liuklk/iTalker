@@ -1,7 +1,5 @@
 package com.klk.italker.fragment.account;
 
-import android.support.v4.app.Fragment;
-
 import com.klk.common.app.BaseFragment;
 import com.klk.italker.R;
 
