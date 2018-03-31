@@ -13,6 +13,8 @@ public class RegisterModel {
     private String name;
     @Expose
     private String password;
+    @Expose
+    private String pushId;
 
 
     public String getAccount() {
@@ -37,6 +39,14 @@ public class RegisterModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
     public static boolean chick(RegisterModel model){

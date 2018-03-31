@@ -1,5 +1,6 @@
 package net.klk.web.italker.push;
 
+import net.klk.web.italker.push.provider.AuthRequestFilter;
 import net.klk.web.italker.push.provider.GsonProvider;
 import net.klk.web.italker.push.service.AccountService;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -15,6 +16,8 @@ public class Application  extends ResourceConfig{
         packages(AccountService.class.getPackage().getName());
         //注册json转换器
         register(GsonProvider.class);
+        //注册全局请求拦截器
+        register(AuthRequestFilter.class);
         //注册日志打印输出
         register(Logger.class);
     }

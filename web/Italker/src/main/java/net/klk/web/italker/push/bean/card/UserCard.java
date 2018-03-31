@@ -21,8 +21,6 @@ public class UserCard {
     private String decription;
     @Expose
     private int sex =0 ;
-    @Expose
-    private String description;
 
 
     //用户关注人的数量
@@ -42,6 +40,10 @@ public class UserCard {
     private LocalDateTime updateAt ;
 
     public UserCard(User user) {
+        this(user,false);
+    }
+
+    public UserCard(User user ,boolean isFollow) {
         this.id = user.getId();
         this.name = user.getName();
         this.phone = user.getPhone();
@@ -49,6 +51,8 @@ public class UserCard {
         this.decription = user.getDecription();
         this.sex = user.getSex();
         this.updateAt = user.getUpdateAt();
+
+        this.isFollow = isFollow;
         //Todo 粉丝数量 都是懒加载
 
     }
@@ -99,14 +103,6 @@ public class UserCard {
 
     public void setSex(int sex) {
         this.sex = sex;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getFollows() {
