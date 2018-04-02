@@ -40,7 +40,9 @@ dependencies {
     //图片剪切库
     compile "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
 
+
     compile project(':factory')
+
 
 
 

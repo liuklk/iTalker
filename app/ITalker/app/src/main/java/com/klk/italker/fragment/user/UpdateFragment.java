@@ -1,4 +1,4 @@
-package com.klk.italker.fragment.account;
+package com.klk.italker.fragment.user;
 
 
 import android.content.Intent;
