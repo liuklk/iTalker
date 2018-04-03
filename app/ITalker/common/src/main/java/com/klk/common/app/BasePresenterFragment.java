@@ -13,7 +13,7 @@ import com.klk.common.factory.presenter.BaseContact;
 
 public abstract class BasePresenterFragment<T extends BaseContact.Presenter> extends BaseFragment implements BaseContact.View<T> {
 
-    private T presenter ;
+    private T mPresenter ;
     @Override
     public void showLoading() {
         //// TODO: 2018/4/2
@@ -27,7 +27,11 @@ public abstract class BasePresenterFragment<T extends BaseContact.Presenter> ext
 
     @Override
     public void setPresenter(T presenter) {
-        this.presenter = presenter ;
+        this.mPresenter = presenter ;
+    }
+
+    protected T getPresenter(){
+        return mPresenter;
     }
 
     //初始化presenter

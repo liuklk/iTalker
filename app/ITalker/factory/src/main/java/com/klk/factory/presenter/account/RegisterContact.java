@@ -20,7 +20,7 @@ public interface RegisterContact {
         void register(String phone, String password, String name);
 
         //校验电话号码
-        void checked(String phone);
+        boolean checked(String phone);
 
     }
 }
