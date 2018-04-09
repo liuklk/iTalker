@@ -5,6 +5,7 @@ import com.klk.factory.model.api.AccountRspModel;
 import com.klk.factory.model.api.RegisterModel;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 /**
@@ -20,5 +21,5 @@ public interface RemoteService {
      * @return  RspModel<AccountRspModel>
      */
     @POST("account/register")
-    Call<RspModel<AccountRspModel>>  accountRegister(RegisterModel model);
+    Call<RspModel<AccountRspModel>>  accountRegister(@Body RegisterModel model);
 }

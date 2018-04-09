@@ -97,7 +97,7 @@ public class Factory {
                 break;
             case RspModel.ERROR_ACCOUNT_TOKEN:
                 MyApplication.Toast(R.string.data_rsp_error_account_token);
-                //instance.logout();
+                instance.logout();
                 break;
             case RspModel.ERROR_ACCOUNT_LOGIN:
                 decodeRspCode(R.string.data_rsp_error_account_login, callback);
@@ -122,4 +122,10 @@ public class Factory {
         }
     }
 
+    /**
+     * 账户退出的方法
+     */
+    private static void logout(){
+
+    }
 }

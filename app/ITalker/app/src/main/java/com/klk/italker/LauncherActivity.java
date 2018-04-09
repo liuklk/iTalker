@@ -10,6 +10,7 @@ import android.util.Property;
 import android.view.View;
 
 import com.klk.common.app.BaseActivity;
+import com.klk.italker.activity.AccountActivity;
 import com.klk.italker.activity.MainActivity;
 import com.klk.italker.fragment.other.PermissionFragment;
 
@@ -28,6 +29,12 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         skip();
     }
 
@@ -42,7 +49,7 @@ public class LauncherActivity extends BaseActivity {
 
     private void reallySkip() {
         if(PermissionFragment.haveAll(this,getSupportFragmentManager())){
-            MainActivity.show(this);
+            AccountActivity.show(this);
             finish();
         }
     }

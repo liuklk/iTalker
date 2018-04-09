@@ -26,7 +26,7 @@ public class AuthRequestFilter implements ContainerRequestFilter{
 
         String path = ((ContainerRequest) requestContext).getPath(false);
 
-        if(path.startsWith("/account/login")||path.startsWith("/account/register")){
+        if(path.startsWith("account/login")||path.startsWith("account/register")){
             //如果是登录注册，不需要拦截
             return;
         }

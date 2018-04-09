@@ -38,8 +38,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         , NavHelper.onTabChangedListener<Integer> {
 
 
-    @BindView(R.id.im_portrait)
-    PortraitView imPortrait;
+//    @BindView(R.id.im_portrait)
+//    PortraitView imPortrait;
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.im_search)
@@ -80,8 +80,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
-
-        PermissionFragment.haveAll(this,getSupportFragmentManager());
 
     }
 
@@ -131,6 +129,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @OnClick(R.id.btn_action)
     public void onActionClicked() {
-        AccountActivity.show(this);
+
     }
 }

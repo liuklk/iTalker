@@ -1,6 +1,8 @@
 package com.klk.factory.data.helper;
 
 import com.klk.common.factory.data.DataSource;
+import com.klk.factory.Factory;
+import com.klk.factory.R;
 import com.klk.factory.model.RspModel;
 import com.klk.factory.model.api.AccountRspModel;
 import com.klk.factory.model.api.RegisterModel;
@@ -34,13 +36,13 @@ public class AccountHelper {
             @Override
             public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
                 //请求成功返回
-                RspModel<AccountRspModel> body = response.body();
-                if(body.success()){
+                RspModel<AccountRspModel> rspModel = response.body();
+                if(rspModel.success()){
                     //取出实体
-                    AccountRspModel rspModel = body.getResult();
-                    if(rspModel.isBind()){
+                    AccountRspModel result = rspModel.getResult();
+                    if(result.isBind()){
                         //取出user
-                        User user = rspModel.getUser();
+                        User user = result.getUser();
                         //数据库存储
 
                         callback.onDataLoaded(user);
@@ -51,7 +53,7 @@ public class AccountHelper {
 
                 }else{
                     //对返回的body的错误code进行解析，返回对应的错误
-                    //callback.onDataLoadFailed();
+                    Factory.deCodeRspModel(rspModel,callback);
                 }
 
             }
@@ -72,6 +74,6 @@ public class AccountHelper {
      * @param callback
      */
     public static void bindPushId(final DataSource.Callback<User> callback){
-
+            callback.onDataLoadFailed(R.string.app_name);
     }
 }
