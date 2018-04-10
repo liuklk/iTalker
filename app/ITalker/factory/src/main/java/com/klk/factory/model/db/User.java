@@ -1,5 +1,10 @@
 package com.klk.factory.model.db;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.util.Date;
 
 /**
@@ -7,33 +12,40 @@ import java.util.Date;
  * @Auther Administrator
  * @date 2018/4/3  10:11
  */
+@Table(database = AppDatabase.class)
+public class User extends BaseModel{
 
-public class User {
+    public static final int SEX_MAN =1;
+    public static final int SEX_WOMEN =2;
 
-
+    @PrimaryKey
     private String id;
-
+    @Column
     private String name;
-
+    @Column
     private String phone;
-
+    @Column
     private String portrait;
-
-    private String decription;
-
+    @Column
+    private String description;
+    @Column
     private int sex = 0;
 
 
     //用户关注人的数量
+    @Column
     private int follows;
 
     //用户的粉丝数量
+    @Column
     private int followings;
 
     //我是否关注过此人
+    @Column
     private boolean isFollow;
 
     //用户最后的更新时间
+    @Column
     private Date updateAt;
 
     public String getId() {
@@ -68,12 +80,12 @@ public class User {
         this.portrait = portrait;
     }
 
-    public String getDecription() {
-        return decription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDecription(String decription) {
-        this.decription = decription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getSex() {

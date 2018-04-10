@@ -1,6 +1,8 @@
 package com.klk.italker;
 
+import com.igexin.sdk.PushManager;
 import com.klk.common.app.MyApplication;
+import com.klk.factory.Factory;
 
 /**
  * @Des
@@ -9,4 +11,12 @@ import com.klk.common.app.MyApplication;
  */
 
 public class App extends MyApplication {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //Factory初始化
+        Factory.setup();
+        //个推的初始化
+        PushManager.getInstance().initialize(this);
+    }
 }

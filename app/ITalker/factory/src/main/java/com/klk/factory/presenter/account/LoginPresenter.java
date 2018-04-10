@@ -17,7 +17,11 @@ public class LoginPresenter extends BasePresenter <LoginContact.IView>implements
     @Override
     public void login(String phone, String password) {
 
+        LoginContact.IView view = getView();
+
     }
+
+
 
 
 }

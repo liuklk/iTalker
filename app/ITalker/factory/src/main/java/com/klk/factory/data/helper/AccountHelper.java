@@ -2,20 +2,20 @@ package com.klk.factory.data.helper;
 
 import com.klk.common.factory.data.DataSource;
 import com.klk.factory.Factory;
-import com.klk.factory.R;
 import com.klk.factory.model.RspModel;
 import com.klk.factory.model.api.AccountRspModel;
 import com.klk.factory.model.api.RegisterModel;
 import com.klk.factory.model.db.User;
 import com.klk.factory.net.Network;
 import com.klk.factory.net.RemoteService;
+import com.klk.factory.persistence.Account;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @Des
+ * @Des  账户数据处理类
  * @Auther Administrator
  * @date 2018/4/3  9:43
  */
@@ -39,11 +39,27 @@ public class AccountHelper {
                 RspModel<AccountRspModel> rspModel = response.body();
                 if(rspModel.success()){
                     //取出实体
-                    AccountRspModel result = rspModel.getResult();
-                    if(result.isBind()){
-                        //取出user
-                        User user = result.getUser();
-                        //数据库存储
+                    AccountRspModel accountModel = rspModel.getResult();
+
+                    //取出user
+                    User user = accountModel.getUser();
+                    //数据库存储
+                    //第一种存储方式
+                    user.save();
+                       /*
+                       //第二种存储方式可以存储多个user
+                        FlowManager.getModelAdapter(User.class).save(user);
+                        //第三种放在事务中进行存储
+                        DatabaseDefinition definition = FlowManager.getDatabase(AppDatabase.class);
+                        definition.beginTransactionAsync(new ITransaction() {
+                            @Override
+                            public void execute(DatabaseWrapper databaseWrapper) {
+                                user.save();
+                            }
+                        }).execute();
+                        */
+                       Account.saveAccountInfo(accountModel);
+                    if(accountModel.isBind()){
 
                         callback.onDataLoaded(user);
                     }else {
@@ -74,6 +90,6 @@ public class AccountHelper {
      * @param callback
      */
     public static void bindPushId(final DataSource.Callback<User> callback){
-            callback.onDataLoadFailed(R.string.app_name);
+        Account.setIsBind(true);
     }
 }

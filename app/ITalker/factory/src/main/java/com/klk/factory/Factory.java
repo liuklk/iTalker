@@ -7,6 +7,10 @@ import com.google.gson.GsonBuilder;
 import com.klk.common.app.MyApplication;
 import com.klk.common.factory.data.DataSource;
 import com.klk.factory.model.RspModel;
+import com.klk.factory.persistence.Account;
+import com.klk.factory.utils.DbFlowExclusionStrategies;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,11 +35,23 @@ public class Factory {
     private Factory(){
         executor = Executors.newFixedThreadPool(4);//创建一个含有4个线程的线程池
         gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
-                //TODO
-                //.setExclusionStrategies()
+                //设置一个过滤器，数据库级别的Model不进行Json转换
+                .setExclusionStrategies(new DbFlowExclusionStrategies())
                 .create();
     }
 
+    /**
+     *Factory初始化的方法
+     */
+    public static void setup(){
+        //加载用户信息
+        Account.loadFromSp(getApplication());
+        //初始化DbFlow数据
+        FlowManager.init(new FlowConfig.Builder(getApplication())
+                .openDatabasesOnInit(true)
+                .build());
+
+    }
     /**
      * 获取全局Application的方法
      * @return
@@ -126,6 +142,14 @@ public class Factory {
      * 账户退出的方法
      */
     private static void logout(){
+
+    }
+
+    /**
+     * 分发推送来的消息
+     * @param massage
+     */
+    public static void dispatchPushMassage(String massage){
 
     }
 }

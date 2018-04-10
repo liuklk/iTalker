@@ -1,6 +1,7 @@
 package com.klk.italker.fragment.account;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import com.klk.common.app.BasePresenterFragment;
 import com.klk.factory.presenter.account.LoginContact;
 import com.klk.factory.presenter.account.LoginPresenter;
 import com.klk.italker.R;
+import com.klk.italker.activity.MainActivity;
 
 import net.qiujuer.genius.ui.widget.Button;
 import net.qiujuer.genius.ui.widget.Loading;
@@ -32,7 +34,6 @@ public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter
     Button btnSubmit;
     @BindView(R.id.loading)
     Loading loading;
-    Unbinder unbinder;
     private AccountTrigger accountTrigger;
 
     @Override
@@ -53,12 +54,28 @@ public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter
         accountTrigger = (AccountTrigger) context;
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void showError(@StringRes int id) {
+        super.showError(id);
+        //进度条停止
+        loading.stop();
+        editPassword.setEnabled(true);
+        editPhone.setEnabled(true);
+        btnSubmit.setEnabled(true);
+
 
     }
 
+    @Override
+    public void showLoading() {
+        super.showLoading();
+        loading.start();
+
+        editPassword.setEnabled(false);
+        editPhone.setEnabled(false);
+        btnSubmit.setEnabled(false);
+    }
     @OnClick({R.id.txt_go_register, R.id.btn_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -66,6 +83,12 @@ public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter
                 accountTrigger.triggerAccount();
                 break;
             case R.id.btn_submit:
+                showLoading();
+                LoginPresenter presenter = (LoginPresenter) getPresenter();
+                String phone = editPhone.getText().toString();
+                String password = editPassword.getText().toString();
+
+                presenter.login(phone,password);
                 break;
         }
     }
@@ -73,6 +96,9 @@ public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter
 
     @Override
     public void loginSuccess() {
-
+        //进入主界面
+        MainActivity.show(getContext());
+        //关闭账户界面
+        getActivity().finish();
     }
 }
