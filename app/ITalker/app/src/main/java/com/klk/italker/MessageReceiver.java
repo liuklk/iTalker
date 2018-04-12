@@ -52,7 +52,7 @@ public class MessageReceiver extends BroadcastReceiver{
      */
     private void onClientInit(String cid){
         Account.setPushId(cid);
-        if(Account.isLogin()){
+        if(!Account.isLogin()){
             //账户登录状态进行一次pushId的绑定
             //没有登录是不能绑定pushId的
             AccountHelper.bindPushId(null);

@@ -15,6 +15,7 @@ import com.klk.common.app.BaseActivity;
 import com.klk.factory.persistence.Account;
 import com.klk.italker.activity.AccountActivity;
 import com.klk.italker.activity.MainActivity;
+import com.klk.italker.activity.UserInfoActivity;
 import com.klk.italker.fragment.other.PermissionFragment;
 
 import net.qiujuer.genius.res.Resource;
@@ -37,18 +38,17 @@ public class LauncherActivity extends BaseActivity {
     protected void initData() {
         super.initData();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         startAnim(0.5f, new Runnable() {
             @Override
             public void run() {
                 waitPushReceiveId();
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     private void skip() {
@@ -101,7 +101,11 @@ public class LauncherActivity extends BaseActivity {
         //
         if (PermissionFragment.haveAll(this, getSupportFragmentManager())) {
             if (Account.isLogin()) {
-                MainActivity.show(this);
+                if(Account.isComplete()){
+                    MainActivity.show(this);
+                }else {
+                    UserInfoActivity.show(this);
+                }
             } else {
                 AccountActivity.show(this);
             }

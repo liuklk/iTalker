@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.klk.factory.Factory;
-import com.klk.factory.model.api.AccountRspModel;
+import com.klk.factory.model.api.account.AccountRspModel;
 import com.klk.factory.model.db.User;
 import com.klk.factory.model.db.User_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -86,8 +86,13 @@ public class Account {
      * 判断信息是否完善
      */
     public static boolean isComplete(){
-        // TODO: 2018/4/10
-        return isLogin();
+        if(isLogin()){
+            User user = getUser();
+            return !TextUtils.isEmpty(user.getPortrait())
+                    &&!TextUtils.isEmpty(user.getDescription())
+                    &&user.getSex()!=0;
+        }
+        return false;
     }
 
     /**
@@ -97,6 +102,9 @@ public class Account {
         return Account.isBind ;
     }
 
+    /**
+     * 设置绑定状态
+     */
     public static void setIsBind(boolean isBind){
         Account.isBind = isBind ;
         saveToSp(Factory.getApplication());
@@ -124,5 +132,12 @@ public class Account {
                 .select().from(User.class)
                 .where(User_Table.id.eq(id))
                 .querySingle();
+    }
+
+    /**
+     * 获取token
+     */
+    public static String getToken() {
+        return token ;
     }
 }

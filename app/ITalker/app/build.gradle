@@ -51,7 +51,6 @@ dependencies {
 
     compile project(':factory')
 
-
     // 个推
     compile "com.getui:sdk:$rootProject.ext.getuiVersion"
 

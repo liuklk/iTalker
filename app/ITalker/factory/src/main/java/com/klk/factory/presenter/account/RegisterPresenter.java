@@ -7,8 +7,9 @@ import com.klk.common.Common;
 import com.klk.common.factory.data.DataSource;
 import com.klk.common.factory.presenter.BasePresenter;
 import com.klk.factory.data.helper.AccountHelper;
-import com.klk.factory.model.api.RegisterModel;
+import com.klk.factory.model.api.account.RegisterModel;
 import com.klk.factory.model.db.User;
+import com.klk.factory.persistence.Account;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -42,7 +43,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContact.IView>
             view.showError(com.klk.lang.R.string.data_account_register_invalid_parameter_password);
 
         }else {
-            RegisterModel model = new RegisterModel(phone, name, password);
+            RegisterModel model = new RegisterModel(phone, name, password, Account.getPushId());
             //进行网络请求，设置回调
             AccountHelper.register(model,this);
         }

@@ -15,6 +15,7 @@ import com.klk.common.app.BaseActivity;
 import com.klk.common.app.BaseFragment;
 import com.klk.common.factory.data.DataSource;
 import com.klk.factory.model.db.User;
+import com.klk.factory.persistence.Account;
 import com.klk.italker.R;
 import com.klk.italker.fragment.account.AccountTrigger;
 import com.klk.italker.fragment.account.LoginFragment;
@@ -108,7 +109,12 @@ public class AccountActivity extends BaseActivity implements AccountTrigger
     @Override
     public void onDataLoaded(User user) {
         finish();
-        MainActivity.show(this);
+        if(Account.isComplete()){
+            MainActivity.show(this);
+        }else {
+            UserInfoActivity.show(this);
+        }
+
     }
 
 }

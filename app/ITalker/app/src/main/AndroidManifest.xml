@@ -33,6 +33,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 个推的消息接收器 -->
+        <receiver
+            android:name=".MessageReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="1000">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
@@ -45,18 +55,8 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-        <!--个推的消息接收器-->
-        <receiver
-            android:name=".MessageReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="1000">
-            <intent-filter>
-                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
-            </intent-filter>
-        </receiver>
-
+        <activity android:name=".activity.UserInfoActivity"
+            android:theme="@style/AppTheme.Account"/>
     </application>
 
 </manifest>

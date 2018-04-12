@@ -1,13 +1,16 @@
 package com.klk.factory.net;
 
 import com.klk.factory.model.RspModel;
-import com.klk.factory.model.api.AccountRspModel;
-import com.klk.factory.model.api.LoginModel;
-import com.klk.factory.model.api.RegisterModel;
+import com.klk.factory.model.api.account.AccountRspModel;
+import com.klk.factory.model.api.account.LoginModel;
+import com.klk.factory.model.api.account.RegisterModel;
+import com.klk.factory.model.api.user.UserUpdateModel;
+import com.klk.factory.model.card.UserCard;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -40,4 +43,15 @@ public interface RemoteService {
      */
     @POST("account/bind/{pushId}")
     Call<RspModel<AccountRspModel>>  accountBind(@Path(encoded = true, value = "pushId")String pushId);
+
+
+    /**
+     * 绑定的接口
+     * @param model   LoginModel
+     * @return  RspModel<AccountRspModel>
+     */
+    @PUT("user")
+    Call<RspModel<UserCard>>  updateUserInfo(@Body UserUpdateModel model);
+
+
 }

@@ -1,10 +1,13 @@
 package com.klk.factory.data.helper;
 
+import android.text.TextUtils;
+
 import com.klk.common.factory.data.DataSource;
 import com.klk.factory.Factory;
 import com.klk.factory.model.RspModel;
-import com.klk.factory.model.api.AccountRspModel;
-import com.klk.factory.model.api.RegisterModel;
+import com.klk.factory.model.api.account.AccountRspModel;
+import com.klk.factory.model.api.account.LoginModel;
+import com.klk.factory.model.api.account.RegisterModel;
 import com.klk.factory.model.db.User;
 import com.klk.factory.net.Network;
 import com.klk.factory.net.RemoteService;
@@ -28,24 +31,65 @@ public class AccountHelper {
      */
     public static void register(RegisterModel model, final DataSource.Callback<User> callback){
         //调用Retrofit对我们的网络请求做代理
-        RemoteService service = Network.getRetrofit().create(RemoteService.class);
+        RemoteService service = Network.remote();
 
-        Call<RspModel<AccountRspModel>> call = service.accountRegister(model);
+        Call<RspModel<AccountRspModel>> call =service.accountRegister(model);
 
-        call.enqueue(new Callback<RspModel<AccountRspModel>>() {
-            @Override
-            public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
-                //请求成功返回
-                RspModel<AccountRspModel> rspModel = response.body();
-                if(rspModel.success()){
-                    //取出实体
-                    AccountRspModel accountModel = rspModel.getResult();
+        call.enqueue(new AccountCallback(callback));
 
-                    //取出user
-                    User user = accountModel.getUser();
-                    //数据库存储
-                    //第一种存储方式
-                    user.save();
+    }
+
+    /**
+     * 对设备id进行绑定操作
+     */
+    public static void bindPushId(final DataSource.Callback<User> callback){
+        String pushId = Account.getPushId();
+        if(TextUtils.isEmpty(pushId)){
+            return;
+        }
+        //调用Retrofit对我们的网络请求做代理
+        RemoteService service = Network.remote();
+
+        Call<RspModel<AccountRspModel>> call = service.accountBind(pushId);
+
+        call.enqueue(new AccountCallback(callback));
+    }
+
+    /**
+     * 登录的入口
+     */
+    public static void login(LoginModel model, final DataSource.Callback<User> callback){
+
+        //调用Retrofit对我们的网络请求做代理
+        RemoteService service = Network.remote();
+
+        Call<RspModel<AccountRspModel>> call = service.accountLogin(model);
+        //异步请求
+        call.enqueue(new AccountCallback(callback));
+    }
+
+    /**
+     * 请求回调的封装
+     */
+    private static class AccountCallback implements Callback<RspModel<AccountRspModel>>{
+        private DataSource.Callback<User> callback ;
+        public AccountCallback(DataSource.Callback<User> callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
+            //请求成功返回
+            RspModel<AccountRspModel> rspModel = response.body();
+            if(rspModel.success()){
+                //取出实体
+                AccountRspModel accountModel = rspModel.getResult();
+
+                //取出user
+                User user = accountModel.getUser();
+                //数据库存储
+                //第一种存储方式
+                user.save();
                        /*
                        //第二种存储方式可以存储多个user
                         FlowManager.getModelAdapter(User.class).save(user);
@@ -58,38 +102,30 @@ public class AccountHelper {
                             }
                         }).execute();
                         */
-                       Account.saveAccountInfo(accountModel);
-                    if(accountModel.isBind()){
-
+                Account.saveAccountInfo(accountModel);
+                if(accountModel.isBind()){
+                    //设置绑定状态为true
+                    Account.setIsBind(true);
+                    if(callback!=null){
                         callback.onDataLoaded(user);
-                    }else {
-                        //如果没有绑定，需要绑定
-                        bindPushId(callback);
                     }
 
-                }else{
-                    //对返回的body的错误code进行解析，返回对应的错误
-                    Factory.deCodeRspModel(rspModel,callback);
+                }else {
+                    //如果没有绑定，需要绑定
+                    bindPushId(callback);
                 }
 
+            }else{
+                //对返回的body的错误code进行解析，返回对应的错误
+                Factory.deCodeRspModel(rspModel,callback);
             }
+        }
 
-            @Override
-            public void onFailure(Call<RspModel<AccountRspModel>> call, Throwable t) {
-                //网络请求失败
-
+        @Override
+        public void onFailure(Call<RspModel<AccountRspModel>> call, Throwable t) {
+            if(callback!=null){
                 callback.onDataLoadFailed(com.klk.lang.R.string.data_network_error);
             }
-        });
-
-
-    }
-
-    /**
-     * 对设备id进行绑定操作
-     * @param callback
-     */
-    public static void bindPushId(final DataSource.Callback<User> callback){
-        Account.setIsBind(true);
+        }
     }
 }
