@@ -16,6 +16,6 @@ public class Common {
         String REGEX_MOBILE = "[1][3,4,5,7,8][0-9]{9}$";
 
         //服务器根路径
-        String ROOT_URL = "http://10.0.3.2:8080/api/";
+        String ROOT_URL = "http://192.168.42.135:8090/api/";
     }
 }

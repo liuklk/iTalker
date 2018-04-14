@@ -1,6 +1,7 @@
 package com.klk.factory.data.helper;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.klk.common.factory.data.DataSource;
 import com.klk.factory.Factory;
@@ -16,6 +17,8 @@ import com.klk.factory.persistence.Account;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * @Des  账户数据处理类
@@ -68,6 +71,7 @@ public class AccountHelper {
         call.enqueue(new AccountCallback(callback));
     }
 
+    private static final String TAG = "AccountHelper";
     /**
      * 请求回调的封装
      */
@@ -81,6 +85,8 @@ public class AccountHelper {
         public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
             //请求成功返回
             RspModel<AccountRspModel> rspModel = response.body();
+            Log.i(TAG, "onResponse: response        :" +response);
+            Log.i(TAG, "onResponse: rspModel        :" +rspModel);
             if(rspModel.success()){
                 //取出实体
                 AccountRspModel accountModel = rspModel.getResult();

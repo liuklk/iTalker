@@ -46,6 +46,8 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
 
+        <property name="schemaUpdate">true</property>
+
         <!-- 自动更新数据库的级别 -->
         <property name="hbm2ddl.auto">update</property>
         <!--
@@ -62,16 +64,15 @@
                  class="net.klk.web.italker.push.bean.db.UserFollow"/>
 
         <mapping package="net.klk.web.italker.push.bean.db"
-        class="net.klk.web.italker.push.bean.db.Group"/>
+                 class="net.klk.web.italker.push.bean.db.Group"/>
         <mapping package="net.klk.web.italker.push.bean.db"
-        class="net.klk.web.italker.push.bean.db.GroupMember"/>
+                 class="net.klk.web.italker.push.bean.db.GroupMember"/>
 
         <mapping package="net.klk.web.italker.push.bean.db"
-        class="net.klk.web.italker.push.bean.db.Message"/>
+                 class="net.klk.web.italker.push.bean.db.Message"/>
         <mapping package="net.klk.web.italker.push.bean.db"
-        class="net.klk.web.italker.push.bean.db.PushHistory"/>
+                 class="net.klk.web.italker.push.bean.db.PushHistory"/>
         <mapping package="net.klk.web.italker.push.bean.db"
-        class="net.klk.web.italker.push.bean.db.Apply"/>
-
+                 class="net.klk.web.italker.push.bean.db.Apply"/>
     </session-factory>
 </hibernate-configuration>

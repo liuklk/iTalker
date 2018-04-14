@@ -51,6 +51,7 @@ public class UserFactory {
                 .setParameter("token", token)
                 .uniqueResult());
     }
+
     /**
      * 通过id查询
      *
@@ -59,11 +60,12 @@ public class UserFactory {
      */
     public static User queryById(String id) {
         //直接通过id查询速度比较快
-        return Hib.query((Session session) -> session.get(User.class ,id));
+        return Hib.query((Session session) -> session.get(User.class, id));
     }
 
     /**
      * 更新信息到数据库
+     *
      * @return 此用户的信息
      */
     public static User update(User user) {
@@ -76,7 +78,8 @@ public class UserFactory {
 
     /**
      * 用户注册的方法
-     * @param account  电话号码就是用户的账户
+     *
+     * @param account 电话号码就是用户的账户
      * @return 此用户的信息
      */
     public static User register(String name, String password, String account) {
@@ -111,7 +114,6 @@ public class UserFactory {
 
     /**
      * 使用user进行登录
-     *
      */
     private static User login(User user) {
 
@@ -143,6 +145,7 @@ public class UserFactory {
 
     /**
      * 绑定  pushId
+     *
      * @return 此用户的信息
      */
     public static User bindUser(User user, String pushId) {
@@ -192,10 +195,11 @@ public class UserFactory {
 
     /**
      * 查询联系人列表
-     * @param self  自己
-     * @return  List<User>
+     *
+     * @param self 自己
+     * @return List<User>
      */
-    public static List<User> getContacts(User self){
+    public static List<User> getContacts(User self) {
         return Hib.query(session -> {
             //由于followings为懒加载，需要查询之前进行一次加载
             session.load(self, self.getId());
@@ -211,39 +215,40 @@ public class UserFactory {
 
     /**
      * 关注某个人
-     * @param originUser  发起者
-     * @param targetUser  被关注者
-     * @param alis  备注名
+     *
+     * @param originUser 发起者
+     * @param targetUser 被关注者
+     * @param alis       备注名
      * @return 被关注人的信息
      */
-    public static User follow(User originUser ,User targetUser ,String alis){
+    public static User follow(User originUser, User targetUser, String alis) {
 
         UserFollow userfollow = getUserFollow(originUser, targetUser);
 
-        if(userfollow!=null){
-            return userfollow.getTarget() ;
-        }else{
-           return  Hib.query((Hib.Query<User>) session -> {
-                 session.load(originUser ,originUser.getId());
-                 session.load(targetUser ,targetUser.getId());
+        if (userfollow != null) {
+            return userfollow.getTarget();
+        } else {
+            return Hib.query((Hib.Query<User>) session -> {
+                session.load(originUser, originUser.getId());
+                session.load(targetUser, targetUser.getId());
 
-                 //添加两条关系信息
-                 UserFollow originFollow = new UserFollow();
-                 originFollow.setOrigin(originUser);
-                 originFollow.setTarget(targetUser);
-                 originFollow.setAlias(alis);
-
-
-                 UserFollow targetFollow = new UserFollow();
-                 targetFollow.setOrigin(targetUser);
-                 targetFollow.setTarget(originUser);
-
-                 session.save(originFollow);
-                 session.save(targetFollow);
+                //添加两条关系信息
+                UserFollow originFollow = new UserFollow();
+                originFollow.setOrigin(originUser);
+                originFollow.setTarget(targetUser);
+                originFollow.setAlias(alis);
 
 
-                 return targetUser;
-             });
+                UserFollow targetFollow = new UserFollow();
+                targetFollow.setOrigin(targetUser);
+                targetFollow.setTarget(originUser);
+
+                session.save(originFollow);
+                session.save(targetFollow);
+
+
+                return targetUser;
+            });
         }
 
 
@@ -252,33 +257,39 @@ public class UserFactory {
 
     /**
      * 查看是否关注了某个人
-     * @param originUser  发起者
-     * @param targetUser  被关注者
+     *
+     * @param originUser 发起者
+     * @param targetUser 被关注者
      * @return 中间类的信息
      */
-    public static UserFollow getUserFollow(User originUser ,User targetUser ){
+    public static UserFollow getUserFollow(User originUser, User targetUser) {
         return Hib.query(session -> (UserFollow) session.
                 createQuery("from UserFollow where originId =: originId and targetId =: targetId")
-                .setParameter("originId",originUser.getId())
-                .setParameter("targetId",targetUser.getId())
+                .setParameter("originId", originUser.getId())
+                .setParameter("targetId", targetUser.getId())
                 .uniqueResult());
     }
 
     /**
      * 通过name查询一个人，
+     *
      * @param name 可为空，
-     * @return  如果name为空则返回最近的20条数据 ,最多返回20条数据
+     * @return 如果name为空则返回最近的20条数据 ,最多返回20条数据
      */
+    @SuppressWarnings("unchecked")
     public static List<User> search(String name) {
-        return Hib.query(new Hib.Query<List<User>>() {
-            @Override
-            public List<User> query(Session session) {
 
-                session.createQuery("from User where name = : name and portrait is not null and decription is not null")
-                        .setParameter("name","")
-                        .list();
-                return null;
-            }
+        if(Strings.isNullOrEmpty(name)){
+            name ="";//保证了name不会出现空指针
+        }
+        final String searchName = "%"+name+"%";
+        return Hib.query((Session session) -> {
+                        //name忽略大小写，并使用模糊查询
+          return  (List<User>)session.createQuery("from User where lower(name)  = : name and portrait is not null and description is not null")
+                    .setParameter("name", searchName)
+                    .setMaxResults(20)
+                    .list();
+
         });
     }
 }

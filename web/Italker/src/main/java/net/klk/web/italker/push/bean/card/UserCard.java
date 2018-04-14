@@ -48,7 +48,7 @@ public class UserCard {
         this.name = user.getName();
         this.phone = user.getPhone();
         this.portrait = user.getPortrait();
-        this.decription = user.getDecription();
+        this.decription = user.getDescription();
         this.sex = user.getSex();
         this.updateAt = user.getUpdateAt();
 

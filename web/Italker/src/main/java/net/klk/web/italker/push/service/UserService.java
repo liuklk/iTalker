@@ -107,12 +107,12 @@ public class UserService extends BaseService {
 
         User user = UserFactory.queryById(id);
         if (user == null) {
-                return ResponseModel.buildNotFoundUserError(null);
+            return ResponseModel.buildNotFoundUserError(null);
         }
 
-        boolean isFollow =UserFactory.getUserFollow(self, user)==null;
+        boolean isFollow = UserFactory.getUserFollow(self, user) == null;
 
-        return ResponseModel.buildOk(new UserCard(user,isFollow));
+        return ResponseModel.buildOk(new UserCard(user, isFollow));
     }
 
 
@@ -120,10 +120,28 @@ public class UserService extends BaseService {
     @Path("/search/{name:(.*)?}") //name为任意字符可以为空
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseModel<List<UserCard>> searchUser(@DefaultValue("")@PathParam("name") String name) {
+    public ResponseModel<List<UserCard>> searchUser(@DefaultValue("") @PathParam("name") String name) {
         User self = getSelf();
-
+        //查询数据
         List<User> userList = UserFactory.search(name);
+
+        //将user转为userCard
+        // 判断这些人是否为我关注的人
+
+
+        //获取我关注的人
+        List<User> contacts = UserFactory.getContacts(self);
+        //user=>userCard
+        List<UserCard> userCardList = userList.stream().map(user -> {
+            boolean isFollow = user.getId().equalsIgnoreCase(self.getId()) ||
+                    contacts.stream().anyMatch(contactUser ->
+                            user.getId().equalsIgnoreCase(contactUser.getId())
+                    );
+            return new UserCard(user, isFollow);
+        }).collect(Collectors.toList());
+
+        return ResponseModel.buildOk(userCardList);
+
     }
 
 

@@ -41,9 +41,6 @@ public class User implements Principal {
     @Column
     private String portrait;
 
-    @Column
-    private String decription;
-
     //性别有初始值，不为空
     @Column(nullable = false)
     private int sex = 0;
@@ -139,14 +136,6 @@ public class User implements Principal {
 
     public void setPortrait(String portrait) {
         this.portrait = portrait;
-    }
-
-    public String getDecription() {
-        return decription;
-    }
-
-    public void setDecription(String decription) {
-        this.decription = decription;
     }
 
     public int getSex() {

@@ -6,6 +6,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Property;
@@ -37,18 +38,18 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         startAnim(0.5f, new Runnable() {
             @Override
             public void run() {
                 waitPushReceiveId();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     private void skip() {
@@ -64,8 +65,8 @@ public class LauncherActivity extends BaseActivity {
     private void waitPushReceiveId() {
         //已经登录判断是否绑定
         //如果没有绑定
-        Log.i(TAG, "waitPushReceiveId:         Account.isLogin()        "+Account.isLogin());
-        Log.i(TAG, "waitPushReceiveId: Account.isBind()       "+Account.isBind());
+        Log.i(TAG, "waitPushReceiveId:         Account.isLogin()        " + Account.isLogin());
+        Log.i(TAG, "waitPushReceiveId: Account.isBind()       " + Account.isBind());
         if (Account.isLogin()) {
             if (Account.isBind()) {
                 //跳转
@@ -75,7 +76,7 @@ public class LauncherActivity extends BaseActivity {
         } else {
             //没有登录
             //但是拿到pushId,没有登录是不能绑定pushId的
-            Log.i(TAG, "waitPushReceiveId: "+Account.getPushId());
+            Log.i(TAG, "waitPushReceiveId: " + Account.getPushId());
             if (!TextUtils.isEmpty(Account.getPushId())) {
                 //跳转
                 skip();
@@ -99,11 +100,25 @@ public class LauncherActivity extends BaseActivity {
      */
     private void reallySkip() {
         //
-        if (PermissionFragment.haveAll(this, getSupportFragmentManager())) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PermissionFragment.haveAll(this, getSupportFragmentManager())) {
+                if (Account.isLogin()) {
+                    if (Account.isComplete()) {
+                        MainActivity.show(this);
+                    } else {
+                        UserInfoActivity.show(this);
+                    }
+                } else {
+                    AccountActivity.show(this);
+                }
+
+                finish();
+            }
+        } else {
             if (Account.isLogin()) {
-                if(Account.isComplete()){
+                if (Account.isComplete()) {
                     MainActivity.show(this);
-                }else {
+                } else {
                     UserInfoActivity.show(this);
                 }
             } else {
@@ -111,6 +126,7 @@ public class LauncherActivity extends BaseActivity {
             }
 
             finish();
+
         }
     }
 
