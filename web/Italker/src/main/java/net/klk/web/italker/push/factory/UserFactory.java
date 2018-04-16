@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public class UserFactory {
 
-
+    private static final String TAG = "UserFactory";
     /**
      * 通过电话号码查询
      *
@@ -278,17 +278,18 @@ public class UserFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<User> search(String name) {
-
         if(Strings.isNullOrEmpty(name)){
             name ="";//保证了name不会出现空指针
         }
         final String searchName = "%"+name+"%";
         return Hib.query((Session session) -> {
-                        //name忽略大小写，并使用模糊查询
-          return  (List<User>)session.createQuery("from User where lower(name)  = : name and portrait is not null and description is not null")
+                        //name忽略大小写，并使用like进行模糊查询
+            List<User> users =   (List<User>)session.createQuery("from User where lower(name) like :name and portrait is not null and description is not null")
                     .setParameter("name", searchName)
                     .setMaxResults(20)
                     .list();
+            System.out.println(TAG+"        :"+users.toString());
+            return users ;
 
         });
     }

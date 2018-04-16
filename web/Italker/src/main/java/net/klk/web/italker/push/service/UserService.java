@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Path("/user")
 public class UserService extends BaseService {
 
-
+    private static final String TAG = "UserService";
     //用户信息修改
     @PUT //不需要路径
     @Consumes(MediaType.APPLICATION_JSON)

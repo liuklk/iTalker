@@ -283,7 +283,6 @@ public class GalleryView extends RecyclerView {
      */
     private class ViewHolder extends BaseRecyclerViewHolder<Image> {
 
-
         View viewShadow;
         CheckBox cbSelected;
         ImageView ivImage;
@@ -296,10 +295,7 @@ public class GalleryView extends RecyclerView {
 
         @Override
         public void onBind(Image image) {
-            Log.e(TAG, "onBind: ivImage"+ivImage );
-            Log.e(TAG, "onBind: cbSelected"+cbSelected );
-            Log.e(TAG, "onBind: viewShadow"+viewShadow );
-            Log.e(TAG, "onBind: "+ image.path);
+
             Glide.with(getContext())
                     .load(image.path)
                     .centerCrop()

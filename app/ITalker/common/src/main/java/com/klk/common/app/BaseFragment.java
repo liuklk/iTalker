@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.klk.common.widget.PlaceHolderView;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -18,6 +20,8 @@ import butterknife.Unbinder;
  */
 
 public abstract class BaseFragment extends Fragment {
+    //占位控件
+    protected PlaceHolderView mPlaceView;
 
     private View mRootView;
     protected Unbinder mBinder;
@@ -73,5 +77,13 @@ public abstract class BaseFragment extends Fragment {
      */
     protected boolean onBackPressed(){
         return false ;
+    }
+
+    /**
+     * 设置占位控件
+     * @param placeView
+     */
+    protected void setPlaceView(PlaceHolderView placeView){
+        this.mPlaceView = placeView ;
     }
 }

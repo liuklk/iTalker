@@ -16,13 +16,20 @@ public abstract class BasePresenterFragment<T extends BaseContact.Presenter> ext
     protected T mPresenter ;
     @Override
     public void showLoading() {
-        //// TODO: 2018/4/2
+        if(mPlaceView!=null){
+            mPlaceView.triggerLoading();
+        }
     }
 
     @Override
     public void showError(@StringRes int id) {
+        if(mPlaceView!=null){
+            //优先使用占位布局的方法
+            mPlaceView.triggerError(id);
+        }else {
+            MyApplication.Toast(id);
+        }
 
-        MyApplication.Toast(id);
     }
 
     @Override

@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.klk.italker.fragment.search.SearchGroupFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_search_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+    <com.klk.common.widget.view.EmptyView
+        android:id="@+id/ev_search_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

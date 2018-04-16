@@ -38,8 +38,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         , NavHelper.onTabChangedListener<Integer> {
 
 
-//    @BindView(R.id.im_portrait)
-//    PortraitView imPortrait;
+    @BindView(R.id.im_portrait)
+    PortraitView imPortrait;
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.im_search)
@@ -125,10 +125,21 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @OnClick(R.id.im_search)
     public void onSearchClicked() {
+        //当界面为群搜索是进入全搜索，其他进入人的搜索
+        if(Objects.equals(R.string.action_group,mNavHelper.getCurrentTab().extal)){
+            SearchActivity.show(this,SearchActivity.TYPE_GROUP);
+        }
+            SearchActivity.show(this,SearchActivity.TYPE_CONTACT);
+
     }
 
     @OnClick(R.id.btn_action)
     public void onActionClicked() {
-
+        if(Objects.equals(R.string.action_contact,mNavHelper.getCurrentTab().extal)){
+            SearchActivity.show(this,SearchActivity.TYPE_CONTACT);
+        }
+        if(Objects.equals(R.string.action_group,mNavHelper.getCurrentTab().extal)){
+            SearchActivity.show(this,SearchActivity.TYPE_GROUP);
+        }
     }
 }

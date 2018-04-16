@@ -146,7 +146,7 @@ public abstract class BaseRecyclerAdapter<Data>
      *插入一个集合数据
      * @param datas
      */
-    public void add(ArrayList<Data> datas){
+    public void add(List<Data> datas){
         if(mDataList!=null&&mDataList.size()>0){
             int startPos = mDataList.size();
             mDataList.addAll(mDataList.size(),datas);
@@ -167,7 +167,7 @@ public abstract class BaseRecyclerAdapter<Data>
      * 清除原来集合，替换原有集合
      * @param datas
      */
-    public void replace(ArrayList<Data> datas){
+    public void replace(List<Data> datas){
         mDataList.clear();
         if(datas==null||datas.size()==0){
             return;

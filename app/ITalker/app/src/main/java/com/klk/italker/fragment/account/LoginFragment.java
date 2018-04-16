@@ -22,7 +22,8 @@ import butterknife.Unbinder;
 /**
  * 登录的fragment
  */
-public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter> implements LoginContact.IView {
+public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter>
+        implements LoginContact.IView {
 
     @BindView(R.id.edit_phone)
     EditText editPhone;

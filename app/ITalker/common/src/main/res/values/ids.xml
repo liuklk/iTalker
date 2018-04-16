@@ -2,6 +2,8 @@
 <resources>
     <!--recycler封装的tag属性-->
     <item name="tag_recycler_holder" type="id"/>
-    <!--默认头像的drawable名字-->
+    <!--默认头像的drawable的id-->
     <item name="default_portrait" type="drawable" />
+    <!--所有ToolbarActivity中Toolbar的id-->
+    <item name="toolbar" type="id" />
 </resources>
