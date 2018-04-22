@@ -21,12 +21,12 @@ import retrofit2.Call;
  * @date 2018/4/16  10:06
  */
 
-public class SearchContactPresenter extends BasePresenter<SearchContact.IContactView>
-        implements SearchContact.IPresenter ,DataSource.Callback<List<UserCard>> {
+public class SearchContactPresenter extends BasePresenter<SearchContract.IContactView>
+        implements SearchContract.IPresenter ,DataSource.Callback<List<UserCard>> {
 
     private static final String TAG = "SearchContactPresenter";
     private Call mCall ;
-    public SearchContactPresenter(SearchContact.IContactView view) {
+    public SearchContactPresenter(SearchContract.IContactView view) {
         super(view);
     }
 
@@ -43,7 +43,7 @@ public class SearchContactPresenter extends BasePresenter<SearchContact.IContact
     @Override
     public void onDataLoaded(final List<UserCard> userCards) {
         Log.i(TAG, "onDataLoaded: userCards"+userCards.toString());
-        final SearchContact.IContactView view = getView();
+        final SearchContract.IContactView view = getView();
         Log.i(TAG, "onDataLoaded: view"+view);
         if(view!=null){
             Run.onUiAsync(new Action() {
@@ -59,7 +59,7 @@ public class SearchContactPresenter extends BasePresenter<SearchContact.IContact
     @Override
     public void onDataLoadFailed(@StringRes final int resId) {
 
-        final SearchContact.IContactView view = getView();
+        final SearchContract.IContactView view = getView();
         if(view!=null){
             Run.onUiAsync(new Action() {
                 @Override

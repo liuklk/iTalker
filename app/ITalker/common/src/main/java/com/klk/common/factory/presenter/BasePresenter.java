@@ -6,7 +6,7 @@ package com.klk.common.factory.presenter;
  * @date 2018/4/2  16:19
  */
 
-public class BasePresenter<T extends BaseContact.View> implements BaseContact.Presenter {
+public class BasePresenter<T extends BaseContract.View> implements BaseContract.Presenter {
 
     private T mView;
 

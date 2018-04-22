@@ -49,14 +49,27 @@ public interface RemoteService {
 
 
     /**
-     * 绑定的接口
-     * @param model   LoginModel
-     * @return  RspModel<AccountRspModel>
+     * 更改用户信息
+     * @param model   UserUpdateModel
+     * @return  RspModel<UserCard>
      */
     @PUT("user")
     Call<RspModel<UserCard>>  updateUserInfo(@Body UserUpdateModel model);
 
+    /**
+     * 用name进行模糊查询用户
+     * @param name name
+     * @return Call<RspModel<List<UserCard>>>
+     */
     @GET("user/search/{name}")
     Call<RspModel<List<UserCard>>> searchContact(@Path(value = "name", encoded = true) String name);
+
+    /**
+     * 根据id关注某人的接口
+     * @param followId 被关注人的id
+     * @return Call<RspModel<UserCard>>
+     */
+    @PUT("user/following/{followId}")
+    Call<RspModel<UserCard>> userFollow(@Path(value = "followId", encoded = true) String followId);
 
 }

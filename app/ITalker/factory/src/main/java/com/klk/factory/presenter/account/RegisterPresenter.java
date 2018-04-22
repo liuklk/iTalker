@@ -22,16 +22,16 @@ import java.util.regex.Pattern;
  * @date 2018/4/2  16:47
  */
 
-public class RegisterPresenter extends BasePresenter<RegisterContact.IView>
-        implements RegisterContact.IPresenter ,DataSource.Callback<User>{
-    public RegisterPresenter(RegisterContact.IView view) {
+public class RegisterPresenter extends BasePresenter<RegisterContract.IView>
+        implements RegisterContract.IPresenter ,DataSource.Callback<User>{
+    public RegisterPresenter(RegisterContract.IView view) {
         super(view);
     }
 
     @Override
     public void register(String phone, String password, String name) {
 
-        RegisterContact.IView view = getView();
+        RegisterContract.IView view = getView();
         if(!checked(phone)){
             //号码不合法
             view.showError(com.klk.lang.R.string.data_account_register_invalid_parameter_mobile);
@@ -59,7 +59,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContact.IView>
     @Override
     public void onDataLoaded(User user) {
         //数据请求成功
-        final RegisterContact.IView view = getView();
+        final RegisterContract.IView view = getView();
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
@@ -73,7 +73,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContact.IView>
     @Override
     public void onDataLoadFailed(@StringRes final int resId) {
         //数据请求失败
-        final RegisterContact.IView view = getView();
+        final RegisterContract.IView view = getView();
         Run.onUiAsync(new Action() {
             @Override
             public void call() {

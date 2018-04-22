@@ -4,11 +4,19 @@
     android:layout_height="match_parent"
     tools:context="com.klk.italker.fragment.main.ContactFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_contact"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/black_alpha_224"
-        android:text="CONTACT" />
+        android:background="@color/white"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/len_2"
+        android:paddingTop="@dimen/len_2"
+        android:visibility="gone" />
+
+    <com.klk.common.widget.view.EmptyView
+        android:id="@+id/ev_contact"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

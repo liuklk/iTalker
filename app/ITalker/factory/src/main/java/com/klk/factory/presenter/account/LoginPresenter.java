@@ -19,16 +19,16 @@ import net.qiujuer.genius.kit.handler.runable.Action;
  * @date 2018/4/2  16:17
  */
 
-public class LoginPresenter extends BasePresenter <LoginContact.IView>implements LoginContact.IPresenter,DataSource.Callback<User> {
+public class LoginPresenter extends BasePresenter <LoginContract.IView>implements LoginContract.IPresenter,DataSource.Callback<User> {
 
-    public LoginPresenter(LoginContact.IView view) {
+    public LoginPresenter(LoginContract.IView view) {
         super(view);
     }
 
     @Override
     public void login(String phone, String password) {
 
-        LoginContact.IView view = getView();
+        LoginContract.IView view = getView();
 
         if(TextUtils.isEmpty(phone)||TextUtils.isEmpty(password)){
             view.showError(com.klk.lang.R.string.data_account_login_invalid_parameter);
@@ -44,7 +44,7 @@ public class LoginPresenter extends BasePresenter <LoginContact.IView>implements
     public void onDataLoaded(User user) {
 
         //数据请求成功
-        final LoginContact.IView view = getView();
+        final LoginContract.IView view = getView();
         //在主线程中进行
         Run.onUiAsync(new Action() {
             @Override
@@ -60,7 +60,7 @@ public class LoginPresenter extends BasePresenter <LoginContact.IView>implements
     public void onDataLoadFailed(@StringRes final int resId) {
 
         //数据请求成功
-        final LoginContact.IView view = getView();
+        final LoginContract.IView view = getView();
         //在主线程中进行
         Run.onUiAsync(new Action() {
             @Override

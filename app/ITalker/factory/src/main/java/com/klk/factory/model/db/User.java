@@ -1,5 +1,6 @@
 package com.klk.factory.model.db;
 
+import com.klk.common.factory.data.Author;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @date 2018/4/3  10:11
  */
 @Table(database = AppDatabase.class)
-public class User extends BaseModel{
+public class User extends BaseModel implements Author{
 
     public static final int SEX_MAN =1;
     public static final int SEX_WOMEN =2;

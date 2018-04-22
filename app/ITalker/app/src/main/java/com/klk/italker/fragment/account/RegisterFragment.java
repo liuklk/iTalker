@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.klk.common.app.BasePresenterFragment;
-import com.klk.factory.presenter.account.RegisterContact;
+import com.klk.factory.presenter.account.RegisterContract;
 import com.klk.factory.presenter.account.RegisterPresenter;
 import com.klk.italker.R;
 import com.klk.italker.activity.MainActivity;
@@ -23,7 +23,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends BasePresenterFragment<RegisterContact.IPresenter> implements RegisterContact.IView {
+public class RegisterFragment extends BasePresenterFragment<RegisterContract.IPresenter> implements RegisterContract.IView {
 
     @BindView(R.id.edit_phone)
     EditText editPhone;
@@ -45,7 +45,7 @@ public class RegisterFragment extends BasePresenterFragment<RegisterContact.IPre
     }
 
     @Override
-    protected RegisterContact.IPresenter initPresenter() {
+    protected RegisterContract.IPresenter initPresenter() {
         return new RegisterPresenter(this);
     }
 

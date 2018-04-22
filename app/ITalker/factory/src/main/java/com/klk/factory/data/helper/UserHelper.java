@@ -25,8 +25,10 @@ import retrofit2.Response;
 
 public class UserHelper {
     private static final String TAG = "UserHelper";
+
     /**
      * 更新用户信息
+     *
      * @param model    UserUpdateModel
      * @param callback DataSource.Callback
      */
@@ -69,10 +71,11 @@ public class UserHelper {
 
     /**
      * 根据name查询联系人
+     *
      * @param name
      * @param callback
      */
-    public static Call searchContact(String name, final DataSource.Callback<List<UserCard>>callback) {
+    public static Call searchContact(String name, final DataSource.Callback<List<UserCard>> callback) {
         //调用Retrofit对我们的网络请求做代理
         RemoteService service = Network.remote();
 
@@ -83,12 +86,12 @@ public class UserHelper {
             public void onResponse(Call<RspModel<List<UserCard>>> call, Response<RspModel<List<UserCard>>> response) {
                 RspModel<List<UserCard>> rspModel = response.body();
 
-                Log.i(TAG, "onResponse:  rspModel  "+rspModel);
-                if(rspModel.success()){
+                Log.i(TAG, "onResponse:  rspModel  " + rspModel);
+                if (rspModel.success()) {
                     List<UserCard> cardList = rspModel.getResult();
-                    Log.i(TAG, "onResponse:  cardList  "+cardList.toString());
+                    Log.i(TAG, "onResponse:  cardList  " + cardList.toString());
                     callback.onDataLoaded(cardList);
-                }else{
+                } else {
                     //对返回的body的错误code进行解析，返回对应的错误
                     Factory.deCodeRspModel(rspModel, callback);
                 }
@@ -96,6 +99,45 @@ public class UserHelper {
 
             @Override
             public void onFailure(Call<RspModel<List<UserCard>>> call, Throwable t) {
+                if (callback != null) {
+                    callback.onDataLoadFailed(com.klk.lang.R.string.data_network_error);
+                }
+            }
+        });
+
+        return call;
+    }
+
+    /**
+     * 根据name查询联系人
+     *
+     * @param callback
+     */
+    public static Call userFollow(String userId, final DataSource.Callback<UserCard> callback) {
+        //调用Retrofit对我们的网络请求做代理
+        RemoteService service = Network.remote();
+
+        Call<RspModel<UserCard>> call = service.userFollow(userId);
+
+        call.enqueue(new Callback<RspModel<UserCard>>() {
+            @Override
+            public void onResponse(Call<RspModel<UserCard>> call, Response<RspModel<UserCard>> response) {
+                RspModel<UserCard> rspModel = response.body();
+
+                if (rspModel.success()) {
+                    UserCard userCard = rspModel.getResult();
+                    //将userCard转成user,保存到数据库
+                    User user = userCard.build();
+                    user.save();
+                    callback.onDataLoaded(userCard);
+                } else {
+                    //对返回的body的错误code进行解析，返回对应的错误
+                    Factory.deCodeRspModel(rspModel, callback);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RspModel<UserCard>> call, Throwable t) {
                 if (callback != null) {
                     callback.onDataLoadFailed(com.klk.lang.R.string.data_network_error);
                 }

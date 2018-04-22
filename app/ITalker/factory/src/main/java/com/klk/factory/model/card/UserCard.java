@@ -1,5 +1,6 @@
 package com.klk.factory.model.card;
 
+import com.klk.common.factory.data.Author;
 import com.klk.factory.model.db.User;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
  * @date 2018/4/11  15:25
  */
 
-public class UserCard {
+public class UserCard implements Author{
 
 
     private String id;

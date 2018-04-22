@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.klk.common.R;
+import com.klk.common.R2;
 import com.klk.common.widget.recyclerview.BaseRecyclerAdapter;
 import com.klk.common.widget.recyclerview.BaseRecyclerAdapter.BaseRecyclerViewHolder;
 
@@ -25,6 +26,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * 图片选择器的控件
@@ -59,7 +62,7 @@ public class GalleryView extends RecyclerView {
 
     private void init() {
         setLayoutManager(new GridLayoutManager(getContext(), 4));
-        Log.e(TAG, "init: 1111111111111111" );
+        Log.e(TAG, "init: 1111111111111111");
         setAdapter(mAdapter);
         mAdapter.setListener(new BaseRecyclerAdapter.AdapterListenerImpl<Image>() {
             @Override
@@ -207,7 +210,7 @@ public class GalleryView extends RecyclerView {
 
         @Override
         public Loader onCreateLoader(int id, Bundle args) {
-            Log.e(TAG, "onCreateLoader: "+"1111111111111111111111111" );
+            Log.e(TAG, "onCreateLoader: " + "1111111111111111111111111");
             if (LOADER_ID == id) {
                 return new CursorLoader(getContext()
                         , MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -221,13 +224,13 @@ public class GalleryView extends RecyclerView {
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            Log.e(TAG, "onCreateLoader: "+"22222222222222222222" );
+            Log.e(TAG, "onCreateLoader: " + "22222222222222222222");
             ArrayList<Image> images = new ArrayList<>();
             //当数据load完成
-            if (data != null ) {
+            if (data != null) {
                 int count = data.getCount();
-                Log.e(TAG, "onLoadFinished: count."+count );
-                if(count>0){
+                Log.e(TAG, "onLoadFinished: count." + count);
+                if (count > 0) {
                     data.moveToFirst();//将游标移到首位
                     do {
                         int id = data.getInt(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
@@ -247,9 +250,9 @@ public class GalleryView extends RecyclerView {
                         images.add(image);
                     } while (data.moveToNext());
                 }
-                }
+            }
 
-            Log.e(TAG, "onLoadFinished: images5555555555555555555"+images);
+            Log.e(TAG, "onLoadFinished: images5555555555555555555" + images);
             updateSource(images);
         }
 
@@ -266,7 +269,7 @@ public class GalleryView extends RecyclerView {
     private class GalleryAdapter extends BaseRecyclerAdapter<Image> {
 
         @Override
-        protected BaseRecyclerViewHolder onCreateViewHolder(View root, int viewType) {
+        public BaseRecyclerViewHolder onCreateViewHolder(View root, int viewType) {
             return new ViewHolder(root);
         }
 
@@ -281,16 +284,20 @@ public class GalleryView extends RecyclerView {
     /**
      * item 的holder
      */
-    private class ViewHolder extends BaseRecyclerViewHolder<Image> {
-
+    public class ViewHolder extends BaseRecyclerViewHolder<Image> {
+        @BindView(R2.id.view_shadow)
         View viewShadow;
+        @BindView(R2.id.cb_selected)
         CheckBox cbSelected;
+        @BindView(R2.id.iv_image)
         ImageView ivImage;
+
+
         public ViewHolder(View itemView) {
             super(itemView);
-            viewShadow = itemView.findViewById(R.id.view_shadow);
-            cbSelected = itemView.findViewById(R.id.cb_selected);
-            ivImage = itemView.findViewById(R.id.iv_image);
+//            viewShadow = itemView.findViewById(R.id.view_shadow);
+//            cbSelected = itemView.findViewById(R.id.cb_selected);
+//            ivImage = itemView.findViewById(R.id.iv_image);
         }
 
         @Override

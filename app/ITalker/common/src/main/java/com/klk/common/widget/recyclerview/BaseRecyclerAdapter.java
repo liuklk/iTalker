@@ -60,13 +60,13 @@ public abstract class BaseRecyclerAdapter<Data>
         //设置点击事件
         root.setOnClickListener(this);
         root.setOnLongClickListener(this);
-        //设置注解
-        viewHolder.mUnbinder = ButterKnife.bind(root, parent);
+
         //进行界面与viewHolder绑定
         root.setTag(R.id.tag_recycler_holder,viewHolder);
         //绑定callback
         viewHolder.mCallback = this ;
         return viewHolder;
+
     }
 
 
@@ -259,11 +259,14 @@ public abstract class BaseRecyclerAdapter<Data>
      * @param <Data>  泛型
      */
     public static abstract class BaseRecyclerViewHolder<Data> extends RecyclerView.ViewHolder{
-        private Data mData ;
-        private Unbinder mUnbinder ;
+        protected Data mData ;
         private RecyclerCallback mCallback;
+
         public BaseRecyclerViewHolder(View itemView) {
             super(itemView);
+            //设置注解
+            ButterKnife.bind(this,itemView);
+
         }
 
         /**

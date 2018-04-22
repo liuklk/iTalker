@@ -1,7 +1,6 @@
 package com.klk.italker.fragment.user;
 
 
-import android.app.Application;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -18,7 +17,7 @@ import com.klk.common.app.MyApplication;
 import com.klk.common.widget.view.PortraitView;
 import com.klk.factory.Factory;
 import com.klk.factory.net.UpLoadHelper;
-import com.klk.factory.presenter.user.UpdateUserInfoContact;
+import com.klk.factory.presenter.user.UpdateUserInfoContract;
 import com.klk.factory.presenter.user.UpdateUserInfoPresenter;
 import com.klk.italker.R;
 import com.klk.italker.activity.MainActivity;
@@ -39,8 +38,8 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UpdateFragment extends BasePresenterFragment<UpdateUserInfoContact.IPresenter>
-        implements UpdateUserInfoContact.IView {
+public class UpdateFragment extends BasePresenterFragment<UpdateUserInfoContract.IPresenter>
+        implements UpdateUserInfoContract.IView {
     private static final String TAG = "UpdateFragment";
 
 
@@ -116,12 +115,12 @@ public class UpdateFragment extends BasePresenterFragment<UpdateUserInfoContact.
 
     @Override
     public void updateSuccess() {
-        getActivity().finish();
         MainActivity.show(getContext());
+        getActivity().finish();
     }
 
     @Override
-    protected UpdateUserInfoContact.IPresenter initPresenter() {
+    protected UpdateUserInfoContract.IPresenter initPresenter() {
         return new UpdateUserInfoPresenter(this);
     }
 

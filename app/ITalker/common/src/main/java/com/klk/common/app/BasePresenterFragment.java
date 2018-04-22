@@ -3,7 +3,7 @@ package com.klk.common.app;
 import android.content.Context;
 import android.support.annotation.StringRes;
 
-import com.klk.common.factory.presenter.BaseContact;
+import com.klk.common.factory.presenter.BaseContract;
 
 /**
  * @Des
@@ -11,7 +11,8 @@ import com.klk.common.factory.presenter.BaseContact;
  * @date 2018/4/2  15:43
  */
 
-public abstract class BasePresenterFragment<T extends BaseContact.Presenter> extends BaseFragment implements BaseContact.View<T> {
+public abstract class BasePresenterFragment<T extends BaseContract.Presenter> extends BaseFragment
+        implements BaseContract.View<T> {
 
     protected T mPresenter ;
     @Override

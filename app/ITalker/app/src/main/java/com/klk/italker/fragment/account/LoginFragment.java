@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.klk.common.app.BasePresenterFragment;
-import com.klk.factory.presenter.account.LoginContact;
+import com.klk.factory.presenter.account.LoginContract;
 import com.klk.factory.presenter.account.LoginPresenter;
 import com.klk.italker.R;
 import com.klk.italker.activity.MainActivity;
@@ -17,13 +17,12 @@ import net.qiujuer.genius.ui.widget.Loading;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * 登录的fragment
  */
-public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter>
-        implements LoginContact.IView {
+public class LoginFragment extends BasePresenterFragment<LoginContract.IPresenter>
+        implements LoginContract.IView {
 
     @BindView(R.id.edit_phone)
     EditText editPhone;
@@ -44,7 +43,7 @@ public class LoginFragment extends BasePresenterFragment<LoginContact.IPresenter
 
 
     @Override
-    protected LoginContact.IPresenter initPresenter() {
+    protected LoginContract.IPresenter initPresenter() {
         return new LoginPresenter(this);
     }
 
